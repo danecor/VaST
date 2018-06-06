@@ -1,0 +1,181 @@
+#Trial params
+num_steps: 1000000
+summary_step: 1000
+test: False
+hist_len: 1
+obs_size: [60, 80, 3]
+burnin: 50000
+concurrent_batches: 125
+minibatch_size: 128
+train_step: 4
+discount: 0.99
+n_z: 32
+
+env_params:
+    act_skip: 4 
+    screen_size: [60, 80] 
+    show_screen: False
+    train_epoch_length: 25000
+    test_epoch_length: 1000
+    experiments:
+        tmaze:
+            map_path: tmaze
+            map: TMAZE
+            xlim: [-600, 600]
+            ylim: [-600, 600]
+            num_reset_steps: 10 
+            max_turn_steps: 14
+            terminal_distance: 550
+            position_test: hall_x
+            terminal_reward: -1.
+            goal_reward: 1.
+            living_reward: 0.
+            trigger: ReverseRewards
+            trigger_step: 200000
+        hmaze:
+            map_path: hmazenoport
+            map: HMAZE
+            xlim: [-1500, 1000]
+            ylim: [-600, 600]
+            num_reset_steps: 10 
+            max_turn_steps: 14
+            terminal_distance: 550
+            position_test: hmaze
+            terminal_reward: -1.
+            goal_reward: 1.
+            living_reward: -0.01
+            trigger: 
+            trigger_step: 400000
+        exmaze:
+            map_path: exmazeblock
+            map: TMAZE
+            xlim: [-350, 350]
+            ylim: [-600, 100]
+            num_reset_steps: 0 
+            max_turn_steps: 0
+            terminal_distance: 550
+            position_test: exmaze
+            terminal_reward: -1.
+            goal_reward: 1.
+            living_reward: -0.01
+            trigger: FRunEx
+            trigger_step: 50000
+            burnin: 10000
+            dm: False
+            record_positions: True
+        hallmaze:
+            map_path: hallmaze
+            map: MAZE
+            xlim: [-575, 575]
+            ylim: [-575, 575]
+            num_reset_steps: 10 
+            max_turn_steps: 14
+            terminal_distance: 40
+            position_test: hallmaze
+            terminal_reward: -1.
+            goal_reward: 1.
+            living_reward: -0.01
+            trigger: 
+            trigger_step: 400000
+            dm: False
+        hallmaze_hazard:
+            map_path: hallmaze
+            map: MAZE
+            xlim: [-575, 575]
+            ylim: [-575, 575]
+            num_reset_steps: 10 
+            max_turn_steps: 14
+            terminal_distance: 40
+            position_test: hallmaze_hazard
+            terminal_reward: -1.
+            goal_reward: 1.
+            living_reward: -0.01
+            trigger: 
+            trigger_step: 400000
+            dm: False
+
+model_params:
+    learning_rate: 0.0002
+    tau_period: 1
+    tau_min: 0.6667
+    tau_max: 0.6667
+    gpu_frac: 
+    beta_prior: 1
+    beta_reward: 0
+    act_func: relu
+    prior_tau: 0.5
+    straight_through: False
+    weight_summaries: False
+    grad_norm_clip: 5000
+    tf_debug: False
+    net_arch: 5
+
+agent_params:
+    max_replay_size: 500000
+    epsilon_period: 200000
+    min_epsilon: 0.1
+    test_epsilon: 0.05
+    exp_eps_decay: False
+    pri_cutoff: 0.00005
+    delete_old_episodes: False
+    init_capacity: 200000
+    track_repeats: False
+    freeze_weights: False
+
+net_arches:
+    1:
+        #Default
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 2], [64, 4, 2], [128, 3, 2], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [512, [256, 4, 2], [128, 4, 2], [64, 4, 2], [4, 2]]
+        prediction: [512, 256, 512]
+    2:
+        #NATURE encoder
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 4], [64, 4, 2], [64, 3, 1], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [512, [256, 4, 2], [128, 4, 2], [64, 4, 2], [4, 2]]
+        prediction: [512, 256, 512]
+    3:
+        #Low-unit predictor
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 2], [64, 4, 2], [128, 3, 2], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [256, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [256, 128, 256]
+    4:
+        #Uneven encoder
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 4], [64, 4, 2], [128, 3, 1], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [256, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [512, 256, 512]
+    5:
+        #NATURE encoder and simple decoder
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 4], [64, 4, 2], [64, 3, 1], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [256, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [512, 256, 512]
+    6:
+        #4 & 2
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 4], [64, 4, 2], [64, 3, 1], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [256, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [256, 128, 256]
+    7:
+        #Low-channel decoder
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 2], [64, 4, 2], [128, 3, 2], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [128, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [512, 256, 512]
+    8:
+        #All
+        #[Channels, filter side, stride] ... [Units]
+        encoder: [[32, 8, 4], [64, 4, 2], [64, 3, 1], 512]
+        #[Units] ... [Channels, filter side, stride] ... [filter side, stride]
+        decoder: [128, [64, 4, 2], [64, 4, 2], [32, 4, 2], [4, 2]]
+        prediction: [256, 128, 256]

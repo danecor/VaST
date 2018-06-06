@@ -1,0 +1,3 @@
+[submodule "table/cypridict"]
+	path = table/cypridict
+	url = https://github.com/danecor/cypridict.git

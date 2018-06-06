@@ -1,0 +1,40 @@
+type = "Doom Builder Map Settings Configuration";
+gameconfig = "Doom.cfg";
+strictpatches = 0;
+
+maps
+{
+	
+	TMAZE
+	{
+		
+		resources
+		{
+			
+			resource0
+			{
+				type = 0;
+				location = "C:\\Users\\DaneLCN\\Downloads\\Doom1.WAD";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
+		}
+		
+		
+		grid
+		{
+			background = "";
+			backsource = 0;
+			backoffsetx = 0;
+			backoffsety = 0;
+			backscalex = 100;
+			backscaley = 100;
+			gridsize = 32;
+		}
+		
+	}
+	
+}
+
