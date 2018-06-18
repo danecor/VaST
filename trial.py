@@ -86,7 +86,10 @@ class Trial(object):
 		eval_reward = self.agent.summary_variables['eval_reward']/float(self.environment.test_epoch_length)
 		summary_writer.add_summary(summary_writer.value_summary(eval_reward, "eval_reward"), 
 		                           self.agent.step)
-		eval_eps_reward = episode_reward/max(float(num_episodes), 1.)
+		if num_episodes == 0:
+			eval_eps_reward = np.nan
+		else:
+			eval_eps_reward = episode_reward/float(num_episodes)
 		summary_writer.add_summary(summary_writer.value_summary(eval_eps_reward, 
 		                                                        "eval_episode_reward"), 
 		                           self.agent.step)
