@@ -7,19 +7,7 @@ An implementation of Variational State Tabulation, using Python, TensorFlow and 
 You should have a working installation of TensorFlow (https://www.tensorflow.org/install/). The following should include all required python modules:
 
 ```
-pip install numpy scipy matplotlib scikit-image pyyaml bottleneck tblib h5py tables cython
-```
-
-For the Doom environment, you will need VizDoom:
-
-```
-pip install vizdoom
-```
-
-For Atari, you will need a working installation of the Arcade Learning Environment (https://github.com/mgbellemare/Arcade-Learning-Environment) as well as atari-py:
-
-```
-pip install atari-py
+pip install -r requirements.txt
 ```
 
 ### Installation
